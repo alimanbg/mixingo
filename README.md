@@ -1,4 +1,3 @@
-```markdown
 # Mixingo – AI Curriculum Optimizer
 
 **Problem:** Multilingual learners waste time on redundant content. Mixingo analyzes warm-up performance and known languages to create a personalized learning path, removing up to 32% of unnecessary modules.
@@ -70,4 +69,3 @@ Once the backend is running, visit [http://localhost:8000/docs](http://localhost
 
 ## License
 MIT
-```
