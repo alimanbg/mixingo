@@ -8,6 +8,7 @@ from typing import List, Optional
 from schemas import WarmupSubmission, CTMResponse
 from scoring import compute_warmup_signals
 from ai import get_ctm_from_ai, load_demo_json
+from ai import get_exercises_from_ai
 import uuid
 
 from pydantic import BaseModel
@@ -80,3 +81,23 @@ async def demo_profile():
 @app.get("/api/demo/ctm")
 async def demo_ctm():
     return load_demo_json("ctm.json")
+
+class ExerciseRequest(BaseModel):
+    module_id: str
+    user_id: Optional[str] = None  # optional, to access warmup signals for personalization
+
+@app.post("/api/exercises/generate")
+async def generate_exercises(request: ExerciseRequest):
+    module_id = request.module_id
+    warmup_signals = None
+
+    # If user_id provided and session exists, get warmup signals for personalization
+    if request.user_id and request.user_id in user_sessions:
+        warmup_signals = user_sessions[request.user_id].get("warmup_signals")
+
+    exercises = get_exercises_from_ai(module_id, warmup_signals)
+    return exercises
+
+@app.get("/api/demo/exercises")
+async def demo_exercises():
+    return load_demo_json("exercises.json")

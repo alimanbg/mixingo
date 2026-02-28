@@ -88,3 +88,69 @@ Warm-up signals: {json.dumps(warmup_signals, indent=2)}
         demo = load_demo_json("ctm.json")
         demo["heatmap"] = generate_heatmap_from_signals(warmup_signals)
         return demo
+    
+def get_exercises_from_ai(module_id: str, warmup_signals: dict = None) -> dict:
+    """
+    Generate exercises for a specific module using AI.
+    If DEMO_MODE is True or API key missing, return demo exercises.
+    """
+    if os.getenv("DEMO_MODE", "false").lower() == "true":
+        return load_demo_json("exercises.json")
+
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        print("Warning: OPENAI_API_KEY not set, falling back to demo exercises.")
+        return load_demo_json("exercises.json")
+
+    client = OpenAI(api_key=api_key)
+
+    # Find module name from MODULES list (optional, for context)
+    module_info = next((m for m in MODULES if m["id"] == module_id), None)
+    module_name = module_info["name"] if module_info else module_id
+
+    system_prompt = f"""You are an AI language tutor. Generate a short exercise for a student learning French.
+The exercise should focus on the module "{module_name}" ({module_id}).
+Return a JSON object with this exact schema:
+{{
+  "module_id": str,
+  "micro_explanation": str (max 3 lines),
+  "questions": [
+    {{
+      "question": str,
+      "options": [str] (4 options for MCQ, or empty list for short answer),
+      "correct_answer": str,
+      "feedback": str
+    }}
+  ]
+}}
+Generate exactly 3 questions. Make them educational and appropriate for the module.
+Output ONLY valid JSON, no other text."""
+
+    # Optionally include warm-up signals if provided (for personalization)
+    user_context = ""
+    if warmup_signals:
+        user_context = f"\nConsider the student's warm-up performance: {json.dumps(warmup_signals, indent=2)}"
+
+    user_prompt = f"Module ID: {module_id}\nModule name: {module_name}{user_context}"
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.5,
+            response_format={"type": "json_object"}
+        )
+        content = response.choices[0].message.content
+        data = json.loads(content)
+        return data
+    except Exception as e:
+        print(f"Exercise generation failed: {e}")
+        # Fallback to demo exercises (but note: demo is for M03_Pronunciation)
+        # Better to return a generic fallback or a simple generated structure
+        demo = load_demo_json("exercises.json")
+        # Optionally override module_id to match request
+        demo["module_id"] = module_id
+        return demo
