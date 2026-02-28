@@ -6,40 +6,23 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl" style={{ background: "hsl(46 100% 98% / 0.9)", borderBottom: "2px solid hsl(210 90% 50% / 0.1)" }}>
       <div className="container mx-auto flex h-16 items-center justify-between px-6 max-w-7xl">
         <Link to="/" className="flex items-center gap-2.5 group">
-          {/* Logo mark — two overlapping rounded shapes merging into a gradient core */}
-          <span className="inline-flex h-9 w-9 items-center justify-center">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Logo — languages merging (Mixingo brand: blue + yellow) */}
+          <span className="inline-flex h-9 w-9 items-center justify-center shrink-0">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-200 group-hover:scale-105">
               <defs>
-                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#4338CA"/>
-                  <stop offset="100%" stopColor="#06B6D4"/>
+                <linearGradient id="mixGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="hsl(210,90%,50%)"/>
+                  <stop offset="100%" stopColor="hsl(43,90%,44%)"/>
                 </linearGradient>
-                <linearGradient id="leftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#4338CA" stopOpacity="0.85"/>
-                  <stop offset="100%" stopColor="#4338CA" stopOpacity="0.6"/>
-                </linearGradient>
-                <linearGradient id="rightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.6"/>
-                  <stop offset="100%" stopColor="#06B6D4" stopOpacity="0.85"/>
-                </linearGradient>
-                <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                <filter id="mixGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="1" result="blur"/>
                   <feComposite in="SourceGraphic" in2="blur" operator="over"/>
                 </filter>
               </defs>
-              {/* Left circle — Indigo */}
-              <circle cx="14" cy="18" r="9" fill="url(#leftGrad)"/>
-              {/* Right circle — Teal */}
-              <circle cx="22" cy="18" r="9" fill="url(#rightGrad)"/>
-              {/* Intersection glow — gradient blend */}
-              <path
-                d="M18 10.06A9 9 0 0 1 18 25.94A9 9 0 0 1 18 10.06Z"
-                fill="url(#logoGrad)"
-                filter="url(#glow)"
-                opacity="0.95"
-              />
-              {/* Center dot — acceleration point */}
-              <circle cx="18" cy="18" r="2.2" fill="white" opacity="0.95"/>
+              <circle cx="14" cy="18" r="10" fill="hsl(210,90%,50%)" fillOpacity="0.9"/>
+              <circle cx="22" cy="18" r="10" fill="hsl(43,90%,44%)" fillOpacity="0.9"/>
+              <path d="M18 8.4A9.6 9.6 0 0 1 18 27.6A9.6 9.6 0 0 1 18 8.4Z" fill="url(#mixGrad)" filter="url(#mixGlow)" opacity="0.95"/>
+              <circle cx="18" cy="18" r="2.5" fill="white"/>
             </svg>
           </span>
           <span className="font-display font-bold text-xl tracking-wide leading-none select-none">

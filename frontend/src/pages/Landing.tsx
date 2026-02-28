@@ -7,9 +7,9 @@ import { ArrowRight, Zap, Link2, Target, Cpu, Play } from "lucide-react";
 // ─── Merge Visual data ────────────────────────────────────────────────────────
 
 const SOURCE_LANGS = [
-  { code: "粵", label: "Cantonese", angle: 225, color: "hsl(210,90%,52%)", arcColor: "hsl(142,65%,45%)", strength: "High", insight: "Nasal + French R", tooltip: "Cantonese 人 mirrors French nasal vowels; 二 (yi) ≈ French 'r'. Hidden advantage." },
-  { code: "中", label: "Mandarin",  angle: 315, color: "hsl(210,90%,40%)", arcColor: "hsl(43,90%,44%)",  strength: "Medium", insight: "Pattern Recognition", tooltip: "Mandarin → French: SVO structure + logical approach. Minimal cognates, maximal metacognition." },
-  { code: "EN", label: "English",   angle: 90,  color: "hsl(192,80%,42%)", arcColor: "hsl(210,90%,55%)", strength: "High", insight: "Cognate Goldmine", tooltip: "English → French: ~45% vocabulary shared. différence, classe, important transfer directly." },
+  { code: "粵", label: "Cantonese", arcColor: "hsl(142,65%,45%)", insight: "Nasal + French R", tooltip: "Cantonese 人 mirrors French nasal vowels; 二 (yi) ≈ French 'r'." },
+  { code: "中", label: "Mandarin",  arcColor: "hsl(43,90%,44%)",  insight: "Pattern Recognition", tooltip: "Mandarin → French: SVO + logical approach." },
+  { code: "EN", label: "English",   arcColor: "hsl(210,90%,55%)", insight: "Cognate Goldmine", tooltip: "English → French: ~45% vocabulary shared." },
 ];
 
 const TARGET = { code: "FR", label: "French", color: "hsl(43,90%,44%)" };
@@ -23,11 +23,6 @@ const OUTPUT_INSIGHTS = [
 
 function qBez(p0: number, p1: number, p2: number, t: number) {
   return (1 - t) ** 2 * p0 + 2 * (1 - t) * t * p1 + t ** 2 * p2;
-}
-
-function polarXY(cx: number, cy: number, deg: number, r: number) {
-  const rad = ((deg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
 }
 
 function LanguageMergeVisual() {
@@ -63,22 +58,28 @@ function LanguageMergeVisual() {
   }, []);
 
   const t = tick / 60;
-  const CX = 210; const CY = 195;
-  const R = 115; const FRX = CX + 155; const FRY = CY;
+  // Layout: Left (3 langs) → Center (Mixingo) → Right (French)
+  const LEFT_X = 75;
+  const CENTER_X = 210; const CENTER_Y = 130;
+  const RIGHT_X = 345; const RIGHT_Y = 130;
+  const NODE_R = 20;
+  const CORE_R = 32;
 
-  const nodes = SOURCE_LANGS.map((lang, i) => {
-    const base = polarXY(CX, CY, lang.angle, R);
-    return { ...lang, x: base.x + Math.sin(t * 0.55 + i * 1.4) * 5, y: base.y + Math.cos(t * 0.42 + i * 1.1) * 4 };
-  });
-
-  const coreR  = 34;
-  const halo1R = coreR + 13 + Math.sin(t * 1.6) * 4;
-  const halo2R = coreR + 28 + Math.sin(t * 1.1 + 1) * 6;
-  const srcCtrl = nodes.map((n, i) => ({
-    mx: (n.x + CX) / 2 + [-22, 22, 0][i],
-    my: (n.y + CY) / 2 + [-14, -8, 20][i],
+  // 3 circles stacked vertically on the left, all feeding into center
+  const srcY = [60, 130, 200];
+  const nodes = SOURCE_LANGS.map((lang, i) => ({
+    ...lang,
+    x: LEFT_X + Math.sin(t * 0.4 + i * 0.8) * 4,
+    y: srcY[i] + Math.cos(t * 0.35 + i) * 3,
   }));
-  const outMX = (CX + FRX) / 2; const outMY = CY - 48;
+
+  // Control points for arcs: left nodes → center (curve toward center)
+  const srcCtrl = nodes.map((n, i) => ({
+    mx: (n.x + CENTER_X) / 2 + 20,
+    my: (n.y + CENTER_Y) / 2 + (i - 1) * 8,
+  }));
+  const outCtrlX = (CENTER_X + RIGHT_X) / 2;
+  const outCtrlY = CENTER_Y - 25;
 
   return (
     <div className="relative flex flex-col items-center select-none w-full" style={{ userSelect: "none" }}>
@@ -90,7 +91,7 @@ function LanguageMergeVisual() {
         </span>
       </div>
 
-      <svg viewBox="0 0 420 390" width="420" height="390" className="overflow-visible w-full max-w-[460px]">
+      <svg viewBox="0 0 420 260" width="420" height="260" className="overflow-visible w-full max-w-[460px]">
         <defs>
           <radialGradient id="vAura" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="hsl(210,90%,60%)" stopOpacity="0.2" />
@@ -107,93 +108,90 @@ function LanguageMergeVisual() {
           </filter>
         </defs>
 
-        <circle cx={CX} cy={CY} r={170} fill="url(#vAura)" style={{ opacity: 0.5 + Math.sin(t * 0.5) * 0.1 }} />
-        <circle cx={CX} cy={CY} r={R + 7} fill="none" stroke="hsl(210,90%,60%)" strokeWidth="1" strokeOpacity={0.1} strokeDasharray="4 14"
-          style={{ transformOrigin: `${CX}px ${CY}px`, transform: `rotate(${t * 5}deg)` }} />
-
-        {/* Source arcs */}
+        {/* Arcs: 3 left nodes → center (all feeding into Mixingo) */}
         {nodes.map((n, i) => {
           const { mx, my } = srcCtrl[i];
           const dl = 7; const dg = 9;
           const off = -(t * 28 + i * 14) % (dl + dg);
           const isActive = hovered === n.label;
-          const dots = [0, 0.5].map(ph => { const f = (t * 0.36 + i * 0.28 + ph) % 1; return { x: qBez(n.x, mx, CX, f), y: qBez(n.y, my, CY, f), o: Math.sin(f * Math.PI) * 0.9 }; });
+          const dots = [0, 0.5].map(ph => { const f = (t * 0.36 + i * 0.28 + ph) % 1; return { x: qBez(n.x, mx, CENTER_X, f), y: qBez(n.y, my, CENTER_Y, f), o: Math.sin(f * Math.PI) * 0.9 }; });
           return (
             <g key={`s${i}`}>
-              <path d={`M${n.x} ${n.y} Q${mx} ${my} ${CX} ${CY}`} stroke={n.arcColor} strokeWidth="4" fill="none" strokeOpacity={isActive ? 0.18 : 0.07} />
-              <path d={`M${n.x} ${n.y} Q${mx} ${my} ${CX} ${CY}`} stroke={n.arcColor} strokeWidth={isActive ? 2.4 : 1.6} fill="none" strokeDasharray={`${dl} ${dg}`} strokeDashoffset={off} style={{ opacity: isActive ? 1 : 0.6 + Math.sin(t * 0.7 + i) * 0.1 }} />
-              {dots.map((d, di) => <circle key={di} cx={d.x} cy={d.y} r={2.8} fill={n.arcColor} style={{ opacity: d.o * (isActive ? 1 : 0.7) }} filter="url(#vGlowDot)" />)}
+              <path d={`M${n.x} ${n.y} Q${mx} ${my} ${CENTER_X} ${CENTER_Y}`} stroke={n.arcColor} strokeWidth="4" fill="none" strokeOpacity={isActive ? 0.2 : 0.08} />
+              <path d={`M${n.x} ${n.y} Q${mx} ${my} ${CENTER_X} ${CENTER_Y}`} stroke={n.arcColor} strokeWidth={isActive ? 2.4 : 1.4} fill="none" strokeDasharray={`${dl} ${dg}`} strokeDashoffset={off} style={{ opacity: isActive ? 1 : 0.6 + Math.sin(t * 0.7 + i) * 0.1 }} />
+              {dots.map((d, di) => <circle key={di} cx={d.x} cy={d.y} r={2.5} fill={n.arcColor} style={{ opacity: d.o * (isActive ? 1 : 0.7) }} filter="url(#vGlowDot)" />)}
               {srcFlash[i] && (
                 <g>
-                  <rect x={mx - 48} y={my - 13} width="96" height="19" rx="9.5" fill="white" stroke={n.arcColor} strokeWidth="1.3" strokeOpacity="0.45" style={{ filter: "drop-shadow(0 2px 6px hsl(210 90% 50% / 0.12))" }} />
-                  <text x={mx} y={my} textAnchor="middle" fontSize="7" fontWeight="700" fill={n.arcColor} style={{ fontFamily: "Inter,sans-serif" }}>{n.insight}</text>
+                  <rect x={mx - 44} y={my - 11} width="88" height="18" rx="9" fill="white" stroke={n.arcColor} strokeWidth="1.2" strokeOpacity="0.45" style={{ filter: "drop-shadow(0 2px 6px hsl(210 90% 50% / 0.12))" }} />
+                  <text x={mx} y={my} textAnchor="middle" dominantBaseline="middle" fontSize="6.5" fontWeight="700" fill={n.arcColor} style={{ fontFamily: "Inter,sans-serif" }}>{n.insight}</text>
                 </g>
               )}
             </g>
           );
         })}
 
-        {/* Output arc */}
+        {/* Arc: center → French (right) */}
         {(() => {
           const dl = 9; const dg = 7; const off = -(t * 34) % (dl + dg);
-          const dots = [0, 0.4, 0.75].map(ph => { const f = (t * 0.44 + ph) % 1; return { x: qBez(CX, outMX, FRX, f), y: qBez(CY, outMY, FRY, f), o: Math.sin(f * Math.PI) }; });
+          const dots = [0, 0.4, 0.75].map(ph => { const f = (t * 0.44 + ph) % 1; return { x: qBez(CENTER_X, outCtrlX, RIGHT_X, f), y: qBez(CENTER_Y, outCtrlY, RIGHT_Y, f), o: Math.sin(f * Math.PI) }; });
           return (
             <g>
-              <path d={`M${CX} ${CY} Q${outMX} ${outMY} ${FRX} ${FRY}`} stroke="hsl(43,90%,44%)" strokeWidth="5" fill="none" strokeOpacity="0.1" />
-              <path d={`M${CX} ${CY} Q${outMX} ${outMY} ${FRX} ${FRY}`} stroke="hsl(43,90%,44%)" strokeWidth="2.4" fill="none" strokeDasharray={`${dl} ${dg}`} strokeDashoffset={off} style={{ opacity: 0.8 + Math.sin(t * 1.1) * 0.1 }} />
-              {dots.map((d, di) => <circle key={di} cx={d.x} cy={d.y} r={3.2} fill="hsl(43,90%,44%)" style={{ opacity: d.o * 0.9 }} filter="url(#vGlowDot)" />)}
+              <path d={`M${CENTER_X} ${CENTER_Y} Q${outCtrlX} ${outCtrlY} ${RIGHT_X} ${RIGHT_Y}`} stroke="hsl(43,90%,44%)" strokeWidth="5" fill="none" strokeOpacity="0.12" />
+              <path d={`M${CENTER_X} ${CENTER_Y} Q${outCtrlX} ${outCtrlY} ${RIGHT_X} ${RIGHT_Y}`} stroke="hsl(43,90%,44%)" strokeWidth="2.4" fill="none" strokeDasharray={`${dl} ${dg}`} strokeDashoffset={off} style={{ opacity: 0.8 + Math.sin(t * 1.1) * 0.1 }} />
+              {dots.map((d, di) => <circle key={di} cx={d.x} cy={d.y} r={3} fill="hsl(43,90%,44%)" style={{ opacity: d.o * 0.9 }} filter="url(#vGlowDot)" />)}
             </g>
           );
         })()}
 
-        {/* Source nodes */}
+        {/* Source nodes — 3 circles on the LEFT */}
         {nodes.map((n, i) => {
           const isActive = hovered === n.label;
-          const tipY = n.angle < 180 ? n.y - 56 : n.y + 38;
+          const tipX = n.x - 80;
+          const tipY = n.y;
           return (
             <g key={n.code} onMouseEnter={() => setHovered(n.label)} onMouseLeave={() => setHovered(null)} style={{ cursor: "pointer" }} filter="url(#vGlowNode)">
-              <circle cx={n.x} cy={n.y} r={isActive ? 36 : 30} fill={n.color} fillOpacity={isActive ? 0.15 : 0.08} stroke={n.color} strokeWidth={isActive ? 2 : 0.8} strokeOpacity={0.3} />
-              <circle cx={n.x} cy={n.y} r={22} fill={n.color} stroke="white" strokeWidth="2.5" strokeOpacity="0.9" />
-              <text x={n.x} y={n.y + 1.5} textAnchor="middle" dominantBaseline="middle" fontSize="12" fontWeight="900" fill="white" style={{ fontFamily: "Inter,sans-serif" }}>{n.code}</text>
-              <text x={n.x} y={n.y + 37} textAnchor="middle" fontSize="9.5" fontWeight="600" fill="hsl(220,14%,35%)" style={{ fontFamily: "Inter,sans-serif" }}>{n.label}</text>
+              <circle cx={n.x} cy={n.y} r={isActive ? 26 : 22} fill={n.arcColor} fillOpacity={isActive ? 0.2 : 0.1} stroke={n.arcColor} strokeWidth={isActive ? 2 : 0.8} strokeOpacity={0.4} />
+              <circle cx={n.x} cy={n.y} r={NODE_R} fill={n.arcColor} stroke="white" strokeWidth="2" strokeOpacity="0.9" />
+              <text x={n.x} y={n.y + 1} textAnchor="middle" dominantBaseline="middle" fontSize="11" fontWeight="900" fill="white" style={{ fontFamily: "Inter,sans-serif" }}>{n.code}</text>
+              <text x={n.x} y={n.y + 32} textAnchor="middle" fontSize="9" fontWeight="600" fill="hsl(220,14%,35%)" style={{ fontFamily: "Inter,sans-serif" }}>{n.label}</text>
               {isActive && (
                 <g>
-                  <rect x={n.x - 72} y={tipY} width="144" height="30" rx="9" fill="white" stroke={n.color} strokeWidth="1.3" strokeOpacity="0.35" style={{ filter: "drop-shadow(0 4px 10px hsl(210 90% 50% / 0.15))" }} />
-                  <text x={n.x} y={tipY + 15} textAnchor="middle" dominantBaseline="middle" fontSize="8" fontWeight="600" fill={n.color} style={{ fontFamily: "Inter,sans-serif" }}>{n.tooltip}</text>
+                  <rect x={tipX} y={tipY - 14} width="70" height="28" rx="8" fill="white" stroke={n.arcColor} strokeWidth="1.2" strokeOpacity="0.4" style={{ filter: "drop-shadow(0 2px 8px hsl(210 90% 50% / 0.12))" }} />
+                  <text x={tipX + 35} y={tipY} textAnchor="middle" dominantBaseline="middle" fontSize="7" fontWeight="600" fill={n.arcColor} style={{ fontFamily: "Inter,sans-serif" }}>{n.tooltip}</text>
                 </g>
               )}
             </g>
           );
         })}
 
-        {/* Core */}
+        {/* Center — MIXinGO */}
         <g filter="url(#vGlowCore)">
-          <circle cx={CX} cy={CY} r={halo2R} fill="none" stroke="hsl(43,90%,44%)" strokeWidth="0.8" strokeOpacity={0.1 + Math.sin(t * 0.9) * 0.06} strokeDasharray="3 12" />
-          <circle cx={CX} cy={CY} r={halo1R} fill="none" stroke="hsl(210,90%,58%)" strokeWidth="1" strokeOpacity={0.18 + Math.sin(t * 1.8) * 0.1} />
-          <circle cx={CX} cy={CY} r={halo1R - 4} fill="url(#vAura)" style={{ opacity: 0.55 + Math.sin(t * 1.4) * 0.1 }} />
-          <circle cx={CX} cy={CY} r={coreR} fill="white" stroke="hsl(210,90%,50%)" strokeWidth="2.2" style={{ filter: "drop-shadow(0 4px 14px hsl(210 90% 50% / 0.22))" }} />
-          <text x={CX} y={CY - 7} textAnchor="middle" dominantBaseline="middle" fontSize="9.5" fontWeight="900" fill="hsl(210,90%,44%)" style={{ fontFamily: "Sora,sans-serif", letterSpacing: "0.07em" }}>
-            MIX<tspan fill="hsl(220,14%,55%)" fontWeight="500" fontSize="8">in</tspan>GO
+          <circle cx={CENTER_X} cy={CENTER_Y} r={58} fill="url(#vAura)" style={{ opacity: 0.4 + Math.sin(t * 0.5) * 0.08 }} />
+          <circle cx={CENTER_X} cy={CENTER_Y} r={CORE_R + 8} fill="none" stroke="hsl(43,90%,44%)" strokeWidth="0.8" strokeOpacity={0.1 + Math.sin(t * 0.9) * 0.04} strokeDasharray="3 10" />
+          <circle cx={CENTER_X} cy={CENTER_Y} r={CORE_R + 4} fill="none" stroke="hsl(210,90%,58%)" strokeWidth="1" strokeOpacity={0.15 + Math.sin(t * 1.8) * 0.08} />
+          <circle cx={CENTER_X} cy={CENTER_Y} r={CORE_R} fill="white" stroke="hsl(210,90%,50%)" strokeWidth="2" style={{ filter: "drop-shadow(0 4px 14px hsl(210 90% 50% / 0.22))" }} />
+          <text x={CENTER_X} y={CENTER_Y - 6} textAnchor="middle" dominantBaseline="middle" fontSize="9" fontWeight="900" fill="hsl(210,90%,44%)" style={{ fontFamily: "Sora,sans-serif", letterSpacing: "0.06em" }}>
+            MIX<tspan fill="hsl(220,14%,55%)" fontWeight="500" fontSize="7.5">in</tspan>GO
           </text>
-          <text x={CX} y={CY + 7} textAnchor="middle" dominantBaseline="middle" fontSize="6.5" fontWeight="700" fill="hsl(43,80%,40%)" style={{ fontFamily: "Inter,sans-serif", letterSpacing: "0.12em" }}>AI ENGINE</text>
-          <circle cx={CX + 23} cy={CY + 7} r={2.8} fill="hsl(142,65%,48%)" style={{ opacity: 0.7 + Math.sin(t * 3) * 0.3 }} />
+          <text x={CENTER_X} y={CENTER_Y + 8} textAnchor="middle" dominantBaseline="middle" fontSize="5.5" fontWeight="700" fill="hsl(43,80%,40%)" style={{ fontFamily: "Inter,sans-serif", letterSpacing: "0.1em" }}>AI ENGINE</text>
+          <circle cx={CENTER_X + 21} cy={CENTER_Y + 8} r={2.2} fill="hsl(142,65%,48%)" style={{ opacity: 0.7 + Math.sin(t * 3) * 0.3 }} />
         </g>
 
-        {/* French */}
+        {/* French — RIGHT */}
         {(() => {
           const isActive = hovered === "French";
           return (
             <g onMouseEnter={() => setHovered("French")} onMouseLeave={() => setHovered(null)} style={{ cursor: "pointer" }} filter="url(#vGlowNode)">
-              <circle cx={FRX} cy={FRY} r={isActive ? 40 : 34} fill={TARGET.color} fillOpacity={isActive ? 0.15 : 0.08} stroke={TARGET.color} strokeWidth={isActive ? 2 : 1.2} strokeOpacity={0.35} />
-              <circle cx={FRX} cy={FRY} r={26} fill="hsl(43,90%,44%)" stroke="white" strokeWidth="3" strokeOpacity="0.9" style={{ filter: "drop-shadow(0 4px 14px hsl(43 90% 44% / 0.28))" }} />
-              <text x={FRX} y={FRY + 1.5} textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="900" fill="white" style={{ fontFamily: "Inter,sans-serif" }}>FR</text>
-              <text x={FRX} y={FRY + 42} textAnchor="middle" fontSize="9.5" fontWeight="600" fill="hsl(220,14%,35%)" style={{ fontFamily: "Inter,sans-serif" }}>French</text>
-              <rect x={FRX - 32} y={FRY + 50} width="64" height="14" rx="7" fill="hsl(43,90%,44%)" fillOpacity="0.14" stroke="hsl(43,90%,44%)" strokeWidth="1" strokeOpacity="0.45" />
-              <text x={FRX} y={FRY + 57} textAnchor="middle" dominantBaseline="middle" fontSize="7.5" fontWeight="800" fill="hsl(38,80%,35%)" style={{ fontFamily: "Sora,sans-serif", letterSpacing: "0.06em" }}>+32% FASTER</text>
+              <circle cx={RIGHT_X} cy={RIGHT_Y} r={isActive ? 36 : 30} fill={TARGET.color} fillOpacity={isActive ? 0.15 : 0.08} stroke={TARGET.color} strokeWidth={isActive ? 2 : 1.2} strokeOpacity={0.35} />
+              <circle cx={RIGHT_X} cy={RIGHT_Y} r={24} fill="hsl(43,90%,44%)" stroke="white" strokeWidth="2.5" strokeOpacity="0.9" style={{ filter: "drop-shadow(0 4px 14px hsl(43 90% 44% / 0.28))" }} />
+              <text x={RIGHT_X} y={RIGHT_Y + 1} textAnchor="middle" dominantBaseline="middle" fontSize="12" fontWeight="900" fill="white" style={{ fontFamily: "Inter,sans-serif" }}>FR</text>
+              <text x={RIGHT_X} y={RIGHT_Y + 36} textAnchor="middle" fontSize="9" fontWeight="600" fill="hsl(220,14%,35%)" style={{ fontFamily: "Inter,sans-serif" }}>French</text>
+              <rect x={RIGHT_X - 28} y={RIGHT_Y + 42} width="56" height="12" rx="6" fill="hsl(43,90%,44%)" fillOpacity="0.14" stroke="hsl(43,90%,44%)" strokeWidth="1" strokeOpacity="0.45" />
+              <text x={RIGHT_X} y={RIGHT_Y + 50} textAnchor="middle" dominantBaseline="middle" fontSize="6.5" fontWeight="800" fill="hsl(38,80%,35%)" style={{ fontFamily: "Sora,sans-serif", letterSpacing: "0.05em" }}>+32%</text>
               {isActive && (
                 <g>
-                  <rect x={FRX - 72} y={FRY - 58} width="144" height="30" rx="9" fill="white" stroke={TARGET.color} strokeWidth="1.3" strokeOpacity="0.35" style={{ filter: "drop-shadow(0 4px 10px hsl(43 90% 44% / 0.22))" }} />
-                  <text x={FRX} y={FRY - 43} textAnchor="middle" dominantBaseline="middle" fontSize="8" fontWeight="600" fill="hsl(38,80%,35%)" style={{ fontFamily: "Inter,sans-serif" }}>Target acceleration: +32% avg</text>
+                  <rect x={RIGHT_X - 70} y={RIGHT_Y - 48} width="140" height="26" rx="8" fill="white" stroke={TARGET.color} strokeWidth="1.2" strokeOpacity="0.35" style={{ filter: "drop-shadow(0 4px 10px hsl(43 90% 44% / 0.22))" }} />
+                  <text x={RIGHT_X} y={RIGHT_Y - 35} textAnchor="middle" dominantBaseline="middle" fontSize="7" fontWeight="600" fill="hsl(38,80%,35%)" style={{ fontFamily: "Inter,sans-serif" }}>Target: +32% faster</text>
                 </g>
               )}
             </g>
@@ -315,10 +313,13 @@ export default function Landing() {
           <div className="container mx-auto px-6 py-24 max-w-3xl text-center">
             <p className="text-sm font-semibold tracking-widest uppercase mb-6" style={{ color: "hsl(43 90% 44%)" }}>Our Story</p>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 leading-tight">
-              We were the multilingual students<br />the language apps forgot.
+              Languages are closer than you think.<br />The apps just don't connect them.
             </h2>
             <p className="text-lg leading-relaxed" style={{ color: "hsl(220 14% 48%)" }}>
-              Growing up speaking Cantonese, Mandarin, and English, we'd open Duolingo and get asked to match "apple" to "🍎". Our real edge — English's 45% French vocabulary (différence, classe, important), Cantonese nasal 人 mirroring French vowels, Mandarin's pattern recognition — meant nothing to the app. So we built Mixingo: language learning that starts from who you already are.
+              Coming from a multilingual background, with friends from all over the globe, languages have always been part of my life. I’m motivated by the communication and cultural depth they open up. Knowing around seven languages and constantly learning more, I’ve realized that languages are inherently close to each other in surprising ways — and the skills you already have actively help you learn new ones.
+            </p>
+            <p className="mt-5 text-lg leading-relaxed" style={{ color: "hsl(220 14% 48%)" }}>
+              To support my learning, I turned to tutors who speak similar languages to mine, so I could connect multiple languages with my target. But as a student working at the same time, tutors demand time I simply don’t have. Current online tools don’t support multiple language knowledge bases or make connections between them. That’s where Mixingo comes in.
             </p>
           </div>
         </section>

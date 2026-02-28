@@ -50,7 +50,7 @@ const QUESTIONS = [
   },
 ];
 
-// Helper to map Lovable tags to backend categories
+// Helper to map question tags to backend categories
 const tagToCategory = (tag: string): string => {
   switch (tag) {
     case "Vocabulary":
