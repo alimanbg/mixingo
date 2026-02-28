@@ -1,0 +1,27 @@
+{
+  "transfer_advantages": [
+    {"type": "grammar", "description": "English has some similar sentence structures.", "confidence": 0.7}
+  ],
+  "interference_risks": [
+    {"type": "pronunciation", "description": "English speakers may struggle with Korean phonemes.", "confidence": 0.8}
+  ],
+  "pronunciation_risks": [
+    {"type": "phoneme", "description": "Difference between /r/ and /l/", "confidence": 0.6}
+  ],
+  "recommended_order": ["M01_SOV_order", "M03_hangul_basics", "M02_particles_topic_subject"],
+  "modules_to_skip": ["M04_verb_conjugation_basic"],
+  "redundancy_removed_percent": 32,
+  "explainability": [
+    "You already know SOV from another language, so we skipped basic word order exercises.",
+    "Your warm-up showed high accuracy in vocabulary, so we reduced vocab modules by 40%.",
+    "Pronunciation risks detected; we added extra hangul practice."
+  ],
+  "next_best_exercises": [
+    {"skill": "hangul_reading", "prompt": "Read the following syllable: ㄱ", "answer_key": "g/k"}
+  ],
+  "heatmap": [
+    {"module_id": "M01_SOV_order", "area": "grammar", "severity": 0},
+    {"module_id": "M02_particles_topic_subject", "area": "grammar", "severity": 1},
+    {"module_id": "M03_hangul_basics", "area": "script", "severity": 2}
+  ]
+}
