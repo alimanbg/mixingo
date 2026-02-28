@@ -1,27 +1,77 @@
 {
   "transfer_advantages": [
-    {"type": "grammar", "description": "English has some similar sentence structures.", "confidence": 0.7}
+    {
+      "type": "vocabulary",
+      "description": "English shares many cognates with French (restaurant, animal, nation).",
+      "confidence": 0.9
+    },
+    {
+      "type": "grammar",
+      "description": "Basic SVO sentence structure is similar to English and Mandarin.",
+      "confidence": 0.7
+    }
   ],
   "interference_risks": [
-    {"type": "pronunciation", "description": "English speakers may struggle with Korean phonemes.", "confidence": 0.8}
+    {
+      "type": "pronunciation",
+      "description": "Nasal vowels (bon, pain) don't exist in English or Chinese.",
+      "confidence": 0.8
+    },
+    {
+      "type": "grammar",
+      "description": "Noun genders (le/la) may be confusing for English speakers.",
+      "confidence": 0.6
+    }
   ],
   "pronunciation_risks": [
-    {"type": "phoneme", "description": "Difference between /r/ and /l/", "confidence": 0.6}
+    {
+      "type": "vowel",
+      "description": "French 'u' sound (tu) vs. English 'oo'",
+      "confidence": 0.7
+    },
+    {
+      "type": "liaison",
+      "description": "Liaison between words (les amis → leh-zami)",
+      "confidence": 0.5
+    }
   ],
-  "recommended_order": ["M01_SOV_order", "M03_hangul_basics", "M02_particles_topic_subject"],
-  "modules_to_skip": ["M04_verb_conjugation_basic"],
+  "recommended_order": [
+    "M01_FamiliarPhrases",
+    "M02_Cognates",
+    "M04_WordOrder",
+    "M03_Pronunciation",
+    "M05_Gender",
+    "M06_VerbConjugation"
+  ],
+  "modules_to_skip": ["M01_FamiliarPhrases"],
   "redundancy_removed_percent": 32,
   "explainability": [
-    "You already know SOV from another language, so we skipped basic word order exercises.",
-    "Your warm-up showed high accuracy in vocabulary, so we reduced vocab modules by 40%.",
-    "Pronunciation risks detected; we added extra hangul practice."
+    "You already know basic greetings from English pop culture, so we skipped the introductory module.",
+    "English-French cognates are highly transferable; we'll fast-track vocabulary learning.",
+    "Nasal vowels are a new sound – we added extra pronunciation practice."
   ],
   "next_best_exercises": [
-    {"skill": "hangul_reading", "prompt": "Read the following syllable: ㄱ", "answer_key": "g/k"}
+    {
+      "skill": "pronunciation",
+      "prompt": "Listen and repeat: 'bon' (good)",
+      "answer_key": "audio check"
+    },
+    {
+      "skill": "gender",
+      "prompt": "Is 'maison' (house) masculine or feminine?",
+      "answer_key": "feminine"
+    }
   ],
   "heatmap": [
-    {"module_id": "M01_SOV_order", "area": "grammar", "severity": 0},
-    {"module_id": "M02_particles_topic_subject", "area": "grammar", "severity": 1},
-    {"module_id": "M03_hangul_basics", "area": "script", "severity": 2}
+    { "module_id": "M01_FamiliarPhrases", "area": "vocabulary", "severity": 0 },
+    { "module_id": "M02_Cognates", "area": "vocabulary", "severity": 0 },
+    {
+      "module_id": "M03_Pronunciation",
+      "area": "pronunciation",
+      "severity": 2
+    },
+    { "module_id": "M04_WordOrder", "area": "grammar", "severity": 1 },
+    { "module_id": "M05_Gender", "area": "grammar", "severity": 2 },
+    { "module_id": "M06_VerbConjugation", "area": "grammar", "severity": 1 }
   ]
 }

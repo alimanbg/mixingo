@@ -1,18 +1,28 @@
 {
-  "module_id": "M03_hangul_basics",
-  "micro_explanation": "Hangul is phonetic; consonants and vowels combine into blocks.",
+  "module_id": "M03_Pronunciation",
+  "micro_explanation": "French has nasal vowels that don't exist in English or Chinese. Practice these sounds.",
   "questions": [
     {
-      "question": "How do you write 'g' in Hangul?",
-      "options": ["ㄱ", "ㄴ", "ㄷ", "ㅏ"],
-      "correct_answer": "ㄱ",
-      "feedback": "ㄱ represents the 'g' sound."
+      "question": "How do you pronounce the vowel in 'bon' (good)?",
+      "options": [
+        "Like 'bone' in English",
+        "Like 'bawn'",
+        "Nasal 'o'",
+        "Like 'bun'"
+      ],
+      "correct_answer": "Nasal 'o'",
+      "feedback": "Correct! 'bon' uses a nasal vowel – the air comes out through your nose."
     },
     {
-      "question": "Which syllable block represents '한'?",
-      "options": ["ㅎㅏㄴ", "한", "하", "난"],
-      "correct_answer": "한",
-      "feedback": "Correct! 'ㅎ'+'ㅏ'+'ㄴ' combine to form '한'."
+      "question": "Which word contains a nasal vowel?",
+      "options": [
+        "pain (bread)",
+        "parler (to speak)",
+        "merci (thank you)",
+        "table (table)"
+      ],
+      "correct_answer": "pain",
+      "feedback": "Yes, 'pain' has the nasal 'in' sound."
     }
   ]
 }

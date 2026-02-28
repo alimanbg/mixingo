@@ -1,6 +1,6 @@
 {
   "user_id": "demo_user",
   "native_language": "English",
-  "target_language": "Korean",
-  "known_languages": ["English"]
+  "target_language": "French",
+  "known_languages": ["English", "Mandarin", "Cantonese"]
 }
