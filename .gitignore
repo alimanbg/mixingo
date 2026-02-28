@@ -1,2 +1,16 @@
 .env
-.env
+.env.local
+.env.*.local
+*.env
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+.eggs/
+
+# IDE
+.DS_Store

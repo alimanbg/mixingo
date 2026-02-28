@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    --background: 46 100% 98%;
+    --foreground: 222 35% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 35% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 35% 12%;
+
+    /* Sky Blue primary */
+    --primary: 210 90% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 210 90% 94%;
+    --primary-glow: 210 90% 62%;
+
+    /* Sunny Yellow accent */
+    --accent: 43 96% 54%;
+    --accent-foreground: 30 40% 15%;
+    --accent-light: 43 96% 94%;
+    --accent-glow: 43 96% 65%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 35% 20%;
+
+    --muted: 46 40% 94%;
+    --muted-foreground: 220 14% 50%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 30% 88%;
+    --input: 210 30% 88%;
+    --ring: 210 90% 50%;
+
+    --radius: 1rem;
+
+    /* Heatmap colors */
+    --heat-green: 142 72% 45%;
+    --heat-yellow: 43 96% 54%;
+    --heat-red: 4 86% 58%;
+    --heat-neutral: 220 14% 88%;
+
+    /* Gradient stops — Blue → Yellow */
+    --gradient-from: 210 90% 50%;
+    --gradient-to: 43 96% 54%;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px 0 hsl(210 60% 20% / 0.06), 0 1px 2px -1px hsl(210 60% 20% / 0.06);
+    --shadow-md: 0 4px 16px -2px hsl(210 60% 20% / 0.08), 0 2px 6px -2px hsl(210 60% 20% / 0.04);
+    --shadow-lg: 0 10px 40px -4px hsl(210 60% 20% / 0.12), 0 4px 16px -4px hsl(210 60% 20% / 0.06);
+    --shadow-indigo: 0 8px 32px -4px hsl(210 90% 50% / 0.30);
+    --shadow-teal: 0 8px 32px -4px hsl(43 96% 54% / 0.30);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 20% 30%;
+    --sidebar-primary: 210 90% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 90% 94%;
+    --sidebar-accent-foreground: 210 90% 30%;
+    --sidebar-border: 210 30% 88%;
+    --sidebar-ring: 210 90% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+  }
+
+  /* Only Sora for display headings, Inter everywhere else — max 2 fonts */
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* Remove any mono usage — map to Inter */
+  code, kbd, pre, .font-mono {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Solid primary text — no gradient */
+  .text-gradient {
+    color: hsl(var(--primary));
+  }
+
+  .text-gradient-green {
+    color: hsl(var(--primary));
+  }
+
+  /* Solid primary background */
+  .gradient-bg {
+    background: hsl(var(--primary));
+  }
+
+  .gradient-bg-soft {
+    background: hsl(var(--primary-light));
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius);
+  }
+
+  .glass-hero {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: calc(var(--radius) * 2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Shadow utilities */
+  .shadow-sm-custom { box-shadow: var(--shadow-sm); }
+  .shadow-md-custom { box-shadow: var(--shadow-md); }
+  .shadow-lg-custom { box-shadow: var(--shadow-lg); }
+  .shadow-indigo-custom { box-shadow: var(--shadow-indigo); }
+  .shadow-teal-custom { box-shadow: var(--shadow-teal); }
+  /* Legacy */
+  .shadow-green-custom { box-shadow: var(--shadow-indigo); }
+
+  /* Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-pulse-indigo {
+    animation: pulseBlue 2.5s ease-in-out infinite;
+  }
+
+  /* Legacy */
+  .animate-pulse-green {
+    animation: pulseBlue 2.5s ease-in-out infinite;
+  }
+
+  /* Dot grid texture */
+  .dot-texture {
+    background-image: radial-gradient(hsl(var(--border)) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseBlue {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(210 90% 50% / 0.4); }
+  50% { box-shadow: 0 0 0 10px hsl(210 90% 50% / 0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
