@@ -7,18 +7,18 @@ import { ArrowRight, Zap, Link2, Target, Cpu, Play } from "lucide-react";
 // ─── Merge Visual data ────────────────────────────────────────────────────────
 
 const SOURCE_LANGS = [
-  { code: "粵", label: "Cantonese", angle: 225, color: "hsl(210,90%,52%)", arcColor: "hsl(142,65%,45%)", strength: "High", insight: "Tonal Transfer Active", tooltip: "Cantonese → French: tonal rhythm aids prosody" },
-  { code: "中", label: "Mandarin",  angle: 315, color: "hsl(210,90%,40%)", arcColor: "hsl(43,90%,44%)",  strength: "Medium", insight: "Syntax Bridge Found", tooltip: "Mandarin → French: SVO structure alignment" },
-  { code: "EN", label: "English",   angle: 90,  color: "hsl(192,80%,42%)", arcColor: "hsl(210,90%,55%)", strength: "High", insight: "Vocabulary Roots Mapped", tooltip: "English → French: 30% shared Latin roots" },
+  { code: "粵", label: "Cantonese", angle: 225, color: "hsl(210,90%,52%)", arcColor: "hsl(142,65%,45%)", strength: "High", insight: "Nasal + French R", tooltip: "Cantonese 人 mirrors French nasal vowels; 二 (yi) ≈ French 'r'. Hidden advantage." },
+  { code: "中", label: "Mandarin",  angle: 315, color: "hsl(210,90%,40%)", arcColor: "hsl(43,90%,44%)",  strength: "Medium", insight: "Pattern Recognition", tooltip: "Mandarin → French: SVO structure + logical approach. Minimal cognates, maximal metacognition." },
+  { code: "EN", label: "English",   angle: 90,  color: "hsl(192,80%,42%)", arcColor: "hsl(210,90%,55%)", strength: "High", insight: "Cognate Goldmine", tooltip: "English → French: ~45% vocabulary shared. différence, classe, important transfer directly." },
 ];
 
 const TARGET = { code: "FR", label: "French", color: "hsl(43,90%,44%)" };
 
 const OUTPUT_INSIGHTS = [
-  "Grammar Transfer Activated",
-  "Pronunciation Bridge Established",
-  "Vocabulary Alignment Detected",
-  "Pattern Recognition Boosted",
+  "Cognate Goldmine Mapped",
+  "Nasal Bridge: 人 → enfant",
+  "SVO + Pattern Recognition",
+  "45% Vocab Overlap Detected",
 ];
 
 function qBez(p0: number, p1: number, p2: number, t: number) {
@@ -318,7 +318,7 @@ export default function Landing() {
               We were the multilingual students<br />the language apps forgot.
             </h2>
             <p className="text-lg leading-relaxed" style={{ color: "hsl(220 14% 48%)" }}>
-              Growing up speaking Cantonese, Mandarin, and English, we'd open Duolingo and get asked to match "apple" to "🍎". Our real edge — years of tonal training, grammar intuition, shared vocabulary — meant nothing to the app. So we built Mixingo: language learning that starts from who you already are.
+              Growing up speaking Cantonese, Mandarin, and English, we'd open Duolingo and get asked to match "apple" to "🍎". Our real edge — English's 45% French vocabulary (différence, classe, important), Cantonese nasal 人 mirroring French vowels, Mandarin's pattern recognition — meant nothing to the app. So we built Mixingo: language learning that starts from who you already are.
             </p>
           </div>
         </section>
@@ -341,7 +341,7 @@ export default function Landing() {
                 <span className="h-12 w-12 rounded-2xl flex items-center justify-center text-base font-black text-white" style={{ background: "hsl(43 90% 44%)" }}>FR</span>
               </div>
               <h3 className="text-lg font-bold text-foreground mb-2">Your languages do the work</h3>
-              <p className="text-sm leading-relaxed" style={{ color: "hsl(220 14% 52%)" }}>We detect what already transfers — so you never start from zero.</p>
+              <p className="text-sm leading-relaxed" style={{ color: "hsl(220 14% 52%)" }}>English cognates (~45%), Cantonese nasal 人 → French vowels, Mandarin pattern recognition — we map what transfers so you never start from zero.</p>
             </div>
 
             {/* Point 2 — Progress bar visual */}

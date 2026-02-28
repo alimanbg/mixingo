@@ -10,7 +10,7 @@ import {
   Check,
   Loader2,
 } from "lucide-react";
-import { analyzeCTM } from "@/api";
+import { analyzeCTM, getDemoCTM } from "@/api";
 
 // Hardcoded module names for display (match your backend modules)
 const MODULE_NAMES: Record<string, string> = {
@@ -48,12 +48,17 @@ export default function Results() {
       }
 
       if (demoMode) {
-        setCtmData({
-          redundancy_removed_percent: 32,
-          explainability: fallbackInsights,
-          heatmap: fallbackHeatmap,
-          recommended_order: fallbackRecommendedOrder,
-        });
+        try {
+          const demoData = await getDemoCTM();
+          setCtmData(demoData);
+        } catch {
+          setCtmData({
+            redundancy_removed_percent: 32,
+            explainability: fallbackInsights,
+            heatmap: fallbackHeatmap,
+            recommended_order: fallbackRecommendedOrder,
+          });
+        }
         setLoading(false);
         return;
       }
@@ -89,19 +94,19 @@ export default function Results() {
 
   // Static fallback data (used when demoMode is true or no CTM data)
   const fallbackStrengths = [
-    "Familiar sentence structure",
-    "Shared vocabulary roots",
-    "Recognizable question patterns",
+    "🇬🇧 English cognate goldmine (~45% vocab shared)",
+    "🇨🇳 Cantonese nasal 人 → French vowels",
+    "🇨🇳 Mandarin pattern recognition + SVO",
   ];
   const fallbackGrowthAreas = [
-    "Gendered nouns",
-    "Nasal pronunciation",
-    "Article precision",
+    "Noun gender (le/la) — new for all your languages",
+    "Nasal vowels (bon, pain) — Cantonese 人 helps",
+    "French r — similar to Cantonese 二",
   ];
   const fallbackInsights = [
-    "Strong transfer from English vocabulary roots into French",
-    "High structural familiarity from Mandarin pattern recognition",
-    "Pronunciation adaptability advantage from Cantonese tonal training",
+    "🇬🇧 English → French: ~45% vocabulary shared. différence, classe, montagne, important are direct cognates — the Norman Invasion gave you a head start.",
+    "🇨🇳 Cantonese → French: Nasal 人 (lang) mirrors French 'enfant'. French r ≈ 二 (yi). Hong Kong publishes French–Cantonese–Mandarin materials — linguists recognize this hidden advantage.",
+    "🇨🇳 Mandarin → French: Minimal cognates, but your pattern recognition and systematic thinking are strengths. SVO structure aligns; we focus on pronunciation and grammar.",
   ];
 
   const fallbackHeatmap = [

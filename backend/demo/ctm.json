@@ -2,58 +2,68 @@
   "transfer_advantages": [
     {
       "type": "vocabulary",
-      "description": "English shares many cognates with French (restaurant, animal, nation).",
+      "description": "🇬🇧 English & French: The Cognate Goldmine — ~45% of English vocabulary has French origins from the Norman Invasion. Words like important, différence, classe, résultat transfer directly.",
       "confidence": 0.9
     },
     {
+      "type": "pronunciation",
+      "description": "🇨🇳 Cantonese & French: The Hidden Advantage — Cantonese 人 (lang) uses simultaneous oral+nasal airflow, closely mirroring French nasal vowels in 'enfant'. The French 'r' resembles Cantonese 二 (yi) tongue-retraction.",
+      "confidence": 0.8
+    },
+    {
       "type": "grammar",
-      "description": "Basic SVO sentence structure is similar to English and Mandarin.",
+      "description": "English, Mandarin & French share basic SVO structure. Mandarin speakers bring strong pattern recognition and a logical approach — a metacognitive strength for learning French grammar.",
       "confidence": 0.7
     }
   ],
   "interference_risks": [
     {
       "type": "pronunciation",
-      "description": "Nasal vowels (bon, pain) don't exist in English or Chinese.",
+      "description": "Nasal vowels (bon, pain) don't exist in English. Mandarin has no tones in French — retraining is hard. Voiced vs unvoiced consonants (cadeau vs gâteau) can confuse Mandarin speakers.",
       "confidence": 0.8
     },
     {
       "type": "grammar",
-      "description": "Noun genders (le/la) may be confusing for English speakers.",
+      "description": "Noun genders (le/la) are new for English and Chinese speakers. French object pronoun placement (Je l'aime) differs from Cantonese/English.",
       "confidence": 0.6
     }
   ],
   "pronunciation_risks": [
     {
       "type": "vowel",
-      "description": "French 'u' sound (tu) vs. English 'oo'",
-      "confidence": 0.7
+      "description": "French nasal vowels (bon, pain) — air exits through nose and mouth. English has no equivalent. Cantonese 人 can help train this.",
+      "confidence": 0.85
     },
     {
-      "type": "liaison",
-      "description": "Liaison between words (les amis → leh-zami)",
-      "confidence": 0.5
+      "type": "consonant",
+      "description": "The French guttural 'r' — Cantonese 二 (yi) involves similar tongue retraction. English speakers struggle most.",
+      "confidence": 0.7
     }
   ],
   "recommended_order": [
-    "M01_FamiliarPhrases",
     "M02_Cognates",
+    "M01_FamiliarPhrases",
     "M04_WordOrder",
     "M03_Pronunciation",
     "M05_Gender",
     "M06_VerbConjugation"
   ],
-  "modules_to_skip": ["M01_FamiliarPhrases"],
+  "modules_to_skip": [],
   "redundancy_removed_percent": 32,
   "explainability": [
-    "You already know basic greetings from English pop culture, so we skipped the introductory module.",
-    "English-French cognates are highly transferable; we'll fast-track vocabulary learning.",
-    "Nasal vowels are a new sound – we added extra pronunciation practice."
+    "🇬🇧 English → French: ~45% vocabulary shared. After 1066, French shaped English for 350 years — différence, classe, montagne, acteur, important are direct cognates. We fast-track vocabulary.",
+    "🇨🇳 Cantonese → French: Your nasal 人 (lang) and French 'enfant' share airflow patterns. The French 'r' parallels 二 (yi). Hong Kong City University publishes French–Cantonese–Mandarin materials — linguists recognize this link.",
+    "🇨🇳 Mandarin → French: Minimal cognates, but your pattern recognition and systematic thinking are strengths. Grammar transfer is lower — we focus on pronunciation (nasal vowels, voiced consonants) and structure."
   ],
   "next_best_exercises": [
     {
+      "skill": "cognates",
+      "prompt": "Match: différence →",
+      "answer_key": "difference"
+    },
+    {
       "skill": "pronunciation",
-      "prompt": "Listen and repeat: 'bon' (good)",
+      "prompt": "Listen and repeat: 'bon' — nasal vowel like Cantonese 人",
       "answer_key": "audio check"
     },
     {
@@ -65,12 +75,8 @@
   "heatmap": [
     { "module_id": "M01_FamiliarPhrases", "area": "vocabulary", "severity": 0 },
     { "module_id": "M02_Cognates", "area": "vocabulary", "severity": 0 },
-    {
-      "module_id": "M03_Pronunciation",
-      "area": "pronunciation",
-      "severity": 2
-    },
-    { "module_id": "M04_WordOrder", "area": "grammar", "severity": 1 },
+    { "module_id": "M03_Pronunciation", "area": "phonology", "severity": 2 },
+    { "module_id": "M04_WordOrder", "area": "syntax", "severity": 1 },
     { "module_id": "M05_Gender", "area": "grammar", "severity": 2 },
     { "module_id": "M06_VerbConjugation", "area": "grammar", "severity": 1 }
   ]

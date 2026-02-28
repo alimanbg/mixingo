@@ -1,28 +1,42 @@
 {
-  "module_id": "M03_Pronunciation",
-  "micro_explanation": "French has nasal vowels that don't exist in English or Chinese. Practice these sounds.",
+  "module_id": "M02_Cognates",
+  "micro_explanation": "🇬🇧 English & French share a 'Cognate Goldmine' — ~45% of English vocabulary has French origins from the Norman Invasion. We leverage your existing knowledge.",
   "questions": [
     {
-      "question": "How do you pronounce the vowel in 'bon' (good)?",
-      "options": [
-        "Like 'bone' in English",
-        "Like 'bawn'",
-        "Nasal 'o'",
-        "Like 'bun'"
-      ],
-      "correct_answer": "Nasal 'o'",
-      "feedback": "Correct! 'bon' uses a nasal vowel – the air comes out through your nose."
+      "question": "Which French word is a direct cognate of 'difference'?",
+      "options": ["différence", "différent", "différer", "diffus"],
+      "correct_answer": "différence",
+      "feedback": "Perfect! différence = difference — same meaning, slightly different spelling. English and French share ~45% vocabulary; 29% of modern English words are directly from French. You're using your built-in advantage."
     },
     {
-      "question": "Which word contains a nasal vowel?",
-      "options": [
-        "pain (bread)",
-        "parler (to speak)",
-        "merci (thank you)",
-        "table (table)"
-      ],
-      "correct_answer": "pain",
-      "feedback": "Yes, 'pain' has the nasal 'in' sound."
+      "question": "Match the English word to its French equivalent: 'class'",
+      "options": ["classe", "classeur", "classification", "classique"],
+      "correct_answer": "classe",
+      "feedback": "Classe = class — almost identical! After 1066, French became the language of law and government in England for 350 years. Your warm-up 'important' question showed this: many -ant words are identical in French."
+    },
+    {
+      "question": "'Montagne' in French means...",
+      "options": ["mountain", "month", "money", "monument"],
+      "correct_answer": "mountain",
+      "feedback": "Montagne = mountain — you can see the connection! English speakers are 'power users' of French vocabulary from day one. Around 50% of the first 1,000 most common English words stem from French."
+    },
+    {
+      "question": "How is the 'on' in 'bon' (good) pronounced?",
+      "options": ["like 'own' in English", "nasal sound (air through nose + mouth)", "like 'on' in English", "silent"],
+      "correct_answer": "nasal sound (air through nose + mouth)",
+      "feedback": "🇨🇳 Cantonese speakers: 人 (lang) involves simultaneous oral and nasal airflow — very similar to French nasal vowels in 'enfant'. English has no equivalent; this is where interference happens. Practice builds this new sound."
+    },
+    {
+      "question": "Which word contains a French nasal vowel?",
+      "options": ["pain (bread)", "parler (to speak)", "merci (thank you)", "table (table)"],
+      "correct_answer": "pain (bread)",
+      "feedback": "'Pain' has the nasal 'in' — air exits through both mouth and nose. Cantonese 人 (lang) mirrors this. For Mandarin/English speakers, nasal vowels are the tricky part after the vocabulary head start."
+    },
+    {
+      "question": "Is 'maison' (house) masculine or feminine?",
+      "options": ["masculine (le)", "feminine (la)"],
+      "correct_answer": "feminine (la)",
+      "feedback": "La maison. Most nouns ending in -aison are feminine. Unlike vocabulary (where English helps), noun gender is new for English and Chinese speakers — a growth area, not a transfer."
     }
   ]
 }

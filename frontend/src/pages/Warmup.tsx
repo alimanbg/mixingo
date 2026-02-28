@@ -11,8 +11,8 @@ const QUESTIONS = [
     tag: "Vocabulary",
     tagColor: "hsl(210 90% 50%)",
     tagBg: "hsl(210 90% 50% / 0.1)",
-    question: "Which French word feels most familiar?",
-    insight: "Analysing vocabulary connections…",
+    question: "Which French word feels most familiar? (English–French cognate)",
+    insight: "Mapping the Cognate Goldmine — ~45% of English has French roots…",
     options: [
       { id: "a", text: "important", correct: true },
       { id: "b", text: "toujours" },
@@ -26,7 +26,7 @@ const QUESTIONS = [
     tagColor: "hsl(43 90% 40%)",
     tagBg: "hsl(43 90% 44% / 0.1)",
     question: "Nouns in French have gender. Which sounds right?",
-    insight: "Mapping grammar patterns…",
+    insight: "SVO aligns across English, Mandarin, French — mapping grammar…",
     options: [
       { id: "a", text: "la table", correct: true },
       { id: "b", text: "le table" },
@@ -40,7 +40,7 @@ const QUESTIONS = [
     tagColor: "hsl(142 65% 38%)",
     tagBg: "hsl(142 65% 45% / 0.1)",
     question: '"I\'m looking for a hotel." Which French sentence matches?',
-    insight: "Detecting transfer patterns…",
+    insight: "Detecting transfer from English chercher = to seek…",
     options: [
       { id: "a", text: "Je cherche un hôtel", correct: true },
       { id: "b", text: "Je mange un hôtel" },
