@@ -1,6 +1,7 @@
 import os
 import json
 from openai import OpenAI
+from heatmap import generate_heatmap_from_signals  # fixed import
 from schemas import CTMResponse
 from modules import MODULES
 
@@ -53,6 +54,12 @@ M07_CommonExpressions (pragmatics)
 M08_Reading (script)
 Severity: 0=low risk (green), 1=medium (yellow), 2=high (red).
 Output ONLY valid JSON, no other text.
+
+The heatmap severity should reflect the user's performance in each area:
+- 0 = good performance (low risk) – few or no errors in that area.
+- 1 = medium risk – some errors, needs practice.
+- 2 = high risk – many errors, critical to address.
+Base it on the warm-up signals provided.
 """
 
     user_prompt = f"""
@@ -64,7 +71,7 @@ Warm-up signals: {json.dumps(warmup_signals, indent=2)}
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # or "gpt-3.5-turbo" if you prefer
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
@@ -77,5 +84,7 @@ Warm-up signals: {json.dumps(warmup_signals, indent=2)}
         return data
     except Exception as e:
         print(f"AI call failed: {e}")
-        # Fallback to demo JSON
-        return load_demo_json("ctm.json")
+        # Fallback: start with demo CTM but replace heatmap with dynamic one
+        demo = load_demo_json("ctm.json")
+        demo["heatmap"] = generate_heatmap_from_signals(warmup_signals)
+        return demo
