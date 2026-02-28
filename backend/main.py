@@ -101,3 +101,10 @@ async def generate_exercises(request: ExerciseRequest):
 @app.get("/api/demo/exercises")
 async def demo_exercises():
     return load_demo_json("exercises.json")
+
+@app.get("/api/status")
+async def get_status():
+    return {
+        "demo_mode": os.getenv("DEMO_MODE", "false").lower() == "true",
+        "status": "ok"
+    }
